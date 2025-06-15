@@ -5,10 +5,11 @@ import torch
 from torch.serialization import add_safe_globals
 from ultralytics.nn.tasks import DetectionModel
 from torch.nn.modules.container import Sequential
+from ultralytics.nn.modules.conv import Conv
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
-add_safe_globals([DetectionModel, Sequential])
+add_safe_globals([DetectionModel, Sequential, Conv])
 
 app = Flask(__name__)
 
