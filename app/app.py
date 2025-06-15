@@ -10,6 +10,7 @@ from ultralytics.nn.modules.block import C2f, SPPF
 from ultralytics.nn.modules.head import Detect
 from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.batchnorm import BatchNorm2d
+from torch.nn.modules.activation import SiLU
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
@@ -21,7 +22,8 @@ add_safe_globals([
     SPPF,
     Detect,
     Conv2d,
-    BatchNorm2d
+    BatchNorm2d,
+    SiLU
 ])
 
 app = Flask(__name__)
