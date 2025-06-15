@@ -3,6 +3,12 @@ import numpy as np
 from pathlib import Path
 from ultralytics import YOLO
 from typing import List, Dict, Union, Tuple
+import torch
+from ultralytics.nn.tasks import DetectionModel
+from torch.serialization import add_safe_globals
+
+# Add safe globals for model loading
+add_safe_globals([DetectionModel])
 
 class StarWarsDetector:
     def __init__(self, model_path: Union[str, Path] = "runs/detect/star_wars_detector/weights/best.pt"):

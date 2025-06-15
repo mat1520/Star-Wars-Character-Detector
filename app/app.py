@@ -1,78 +1,71 @@
 import os
-import sys
-import base64
-from pathlib import Path
-
-# Add the project root directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
-import cv2
-import numpy as np
+import torch
+from torch.serialization import add_safe_globals
+from ultralytics.nn.tasks import DetectionModel
 from ml_model.detect import StarWarsDetector
+
+# Add safe globals for model loading
+add_safe_globals([DetectionModel])
 
 app = Flask(__name__)
 
 # Configure upload folder
-UPLOAD_FOLDER = Path("app/static/uploads")
-UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Initialize detector
-MODEL_PATH = str(Path(__file__).parent.parent / "runs/detect/star_wars_detector/weights/best.pt")
+# Load the model
+MODEL_PATH = 'best.pt'
 detector = StarWarsDetector(MODEL_PATH)
 
-def allowed_file(filename):
-    """Check if the file extension is allowed."""
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"jpg", "jpeg", "png"}
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-def encode_image(image):
-    """Encode image to base64 string."""
-    _, buffer = cv2.imencode(".jpg", image)
-    return base64.b64encode(buffer).decode("utf-8")
+@app.route('/detect', methods=['POST'])
+def detect():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    
+    if file:
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        try:
+            results = detector.detect(filepath)
+            detections = []
+            
+            for box in results.boxes:
+                x1, y1, x2, y2 = box.xyxy[0].tolist()
+                confidence = float(box.conf[0])
+                class_id = int(box.cls[0])
+                class_name = results.names[class_id]
+                
+                detections.append({
+                    'class': class_name,
+                    'confidence': confidence,
+                    'bbox': [x1, y1, x2, y2]
+                })
+            
+            return jsonify({
+                'success': True,
+                'detections': detections
+            })
+            
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        finally:
+            # Clean up the uploaded file
+            if os.path.exists(filepath):
+                os.remove(filepath)
 
-@app.route("/")
-def index():
-    """Render the main page."""
-    return render_template("index.html")
-
-@app.route("/predict", methods=["POST"])
-def predict():
-    """Handle image upload and return predictions."""
-    if "image" not in request.files:
-        return jsonify({"error": "No image provided"}), 400
-    
-    file = request.files["image"]
-    if file.filename == "":
-        return jsonify({"error": "No image selected"}), 400
-    
-    if not allowed_file(file.filename):
-        return jsonify({"error": "Invalid file type"}), 400
-    
-    try:
-        # Read image
-        image_bytes = file.read()
-        nparr = np.frombuffer(image_bytes, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        
-        # Make prediction
-        detections, annotated_image = detector.detect_characters(image)
-        
-        # Encode image
-        encoded_image = encode_image(annotated_image)
-        
-        # Prepare response
-        response = {
-            "image": f"data:image/jpeg;base64,{encoded_image}",
-            "detections": detections
-        }
-        
-        return jsonify(response)
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port) 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000))) 
