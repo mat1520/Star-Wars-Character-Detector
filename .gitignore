@@ -32,8 +32,10 @@ ENV/
 *.swo
 
 # Project specific
-runs/
+runs/*
+!runs/detect/star_wars_detector/weights/best.pt
 *.pt
+!runs/detect/star_wars_detector/weights/*.pt
 prediction_result.jpg
 app/static/uploads/
 *.jpg
