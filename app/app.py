@@ -8,6 +8,7 @@ from torch.nn.modules.container import Sequential
 from ultralytics.nn.modules.conv import Conv
 from ultralytics.nn.modules.block import C2f, SPPF
 from ultralytics.nn.modules.head import Detect
+from torch.nn.modules.conv import Conv2d
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
@@ -17,7 +18,8 @@ add_safe_globals([
     Conv,
     C2f,
     SPPF,
-    Detect
+    Detect,
+    Conv2d
 ])
 
 app = Flask(__name__)

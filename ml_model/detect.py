@@ -10,6 +10,7 @@ from torch.nn.modules.container import Sequential
 from ultralytics.nn.modules.conv import Conv
 from ultralytics.nn.modules.block import C2f, SPPF
 from ultralytics.nn.modules.head import Detect
+from torch.nn.modules.conv import Conv2d
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -18,7 +19,8 @@ add_safe_globals([
     Conv,
     C2f,
     SPPF,
-    Detect
+    Detect,
+    Conv2d
 ])
 
 class StarWarsDetector:
@@ -29,7 +31,8 @@ class StarWarsDetector:
         Args:
             model_path (str or Path): Path to the trained YOLOv8 model
         """
-        self.model = YOLO(model_path)
+        # Load model with weights_only=False for compatibility
+        self.model = YOLO(model_path, task='detect')
         self.class_names = [
             "Darth Vader",
             "Luke Skywalker",
