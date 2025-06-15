@@ -18,7 +18,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load the model
-MODEL_PATH = 'best.pt'
+MODEL_PATH = os.path.join('runs', 'detect', 'star_wars_detector', 'weights', 'best.pt')
 detector = StarWarsDetector(MODEL_PATH)
 
 @app.route('/')
