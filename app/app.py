@@ -4,19 +4,23 @@ from werkzeug.utils import secure_filename
 import torch
 from torch.serialization import add_safe_globals
 from ultralytics.nn.tasks import DetectionModel
-from torch.nn.modules.container import Sequential
+from torch.nn.modules.container import Sequential, ModuleList
 from ultralytics.nn.modules.conv import Conv
-from ultralytics.nn.modules.block import C2f, SPPF
+from ultralytics.nn.modules.block import C2f, SPPF, Bottleneck
 from ultralytics.nn.modules.head import Detect
 from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.batchnorm import BatchNorm2d
 from torch.nn.modules.activation import SiLU
+from torch.nn.modules.pooling import MaxPool2d
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
 add_safe_globals([
-    DetectionModel, 
-    Sequential, 
+    MaxPool2d,
+    Bottleneck,
+    ModuleList,
+    DetectionModel,
+    Sequential,
     Conv,
     C2f,
     SPPF,
@@ -28,14 +32,18 @@ add_safe_globals([
 
 app = Flask(__name__)
 
-# Configure upload folder
-UPLOAD_FOLDER = 'uploads'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Configuración de la aplicación
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max-limit
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
-# Load the model
-MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'ml_model', 'best.pt')
+# Asegurarse de que el directorio de uploads existe
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Ruta al modelo
+MODEL_PATH = os.path.join('ml_model', 'best.pt')
+
+# Inicializar el detector
 detector = StarWarsDetector(MODEL_PATH)
 
 @app.route('/')
