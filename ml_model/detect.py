@@ -8,9 +8,18 @@ from ultralytics.nn.tasks import DetectionModel
 from torch.serialization import add_safe_globals
 from torch.nn.modules.container import Sequential
 from ultralytics.nn.modules.conv import Conv
+from ultralytics.nn.modules.block import C2f, SPPF
+from ultralytics.nn.modules.head import Detect
 
 # Add safe globals for model loading
-add_safe_globals([DetectionModel, Sequential, Conv])
+add_safe_globals([
+    DetectionModel, 
+    Sequential, 
+    Conv,
+    C2f,
+    SPPF,
+    Detect
+])
 
 class StarWarsDetector:
     def __init__(self, model_path: Union[str, Path] = "runs/detect/star_wars_detector/weights/best.pt"):

@@ -6,10 +6,19 @@ from torch.serialization import add_safe_globals
 from ultralytics.nn.tasks import DetectionModel
 from torch.nn.modules.container import Sequential
 from ultralytics.nn.modules.conv import Conv
+from ultralytics.nn.modules.block import C2f, SPPF
+from ultralytics.nn.modules.head import Detect
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
-add_safe_globals([DetectionModel, Sequential, Conv])
+add_safe_globals([
+    DetectionModel, 
+    Sequential, 
+    Conv,
+    C2f,
+    SPPF,
+    Detect
+])
 
 app = Flask(__name__)
 
@@ -20,7 +29,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load the model
-MODEL_PATH = os.path.join('runs', 'detect', 'star_wars_detector', 'weights', 'best.pt')
+MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'ml_model', 'best.pt')
 detector = StarWarsDetector(MODEL_PATH)
 
 @app.route('/')
