@@ -15,11 +15,6 @@
 
 Este proyecto implementa un detector de personajes de Star Wars utilizando la tecnología más avanzada de la galaxia: YOLOv8. Nuestro modelo puede identificar con precisión los personajes más icónicos de la saga, incluyendo Darth Vader, Luke Skywalker, Yoda, R2-D2, C-3PO, Chewbacca, Han Solo y Leia Organa.
 
-<div align="center">
-  <img src="runs/detect/star_wars_detector/val_batch0_pred.jpg" alt="Detección de Personajes" width="600"/>
-  <p><i>Detección en tiempo real de personajes de Star Wars</i></p>
-</div>
-
 ## Ejemplo de Resultados
 
 <div align="center">
@@ -52,16 +47,10 @@ Este proyecto implementa un detector de personajes de Star Wars utilizando la te
 </div>
 
 ### Curvas de Aprendizaje
-<div align="center">
-  <img src="runs/detect/star_wars_detector/results.png" alt="Curvas de Aprendizaje" width="800"/>
-  <p><i>Evolución del entrenamiento del modelo</i></p>
-</div>
+_Evolución del entrenamiento del modelo_
 
 ### Matriz de Confusión
-<div align="center">
-  <img src="runs/detect/star_wars_detector/confusion_matrix.png" alt="Matriz de Confusión" width="600"/>
-  <p><i>Análisis de precisión por personaje</i></p>
-</div>
+_Análisis de precisión por personaje_
 
 ## 🎯 Características Principales
 
