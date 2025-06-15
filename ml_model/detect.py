@@ -11,6 +11,7 @@ from ultralytics.nn.modules.conv import Conv
 from ultralytics.nn.modules.block import C2f, SPPF
 from ultralytics.nn.modules.head import Detect
 from torch.nn.modules.conv import Conv2d
+from torch.nn.modules.batchnorm import BatchNorm2d
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -20,7 +21,8 @@ add_safe_globals([
     C2f,
     SPPF,
     Detect,
-    Conv2d
+    Conv2d,
+    BatchNorm2d
 ])
 
 class StarWarsDetector:
