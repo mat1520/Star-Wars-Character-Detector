@@ -13,6 +13,7 @@ from torch.nn.modules.batchnorm import BatchNorm2d
 from torch.nn.modules.activation import SiLU
 from torch.nn.modules.pooling import MaxPool2d
 from torch.nn.modules.upsampling import Upsample
+from ultralytics.nn.modules.conv import Concat
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
@@ -29,7 +30,8 @@ add_safe_globals([
     Detect,
     Conv2d,
     BatchNorm2d,
-    SiLU
+    SiLU,
+    Concat
 ])
 
 app = Flask(__name__)

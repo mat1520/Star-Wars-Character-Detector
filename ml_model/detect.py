@@ -19,6 +19,7 @@ from torch.nn.modules.pooling import MaxPool2d
 from torch.serialization import add_safe_globals
 from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.upsampling import Upsample
+from ultralytics.nn.modules.conv import Concat
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -34,7 +35,8 @@ add_safe_globals([
     Detect,
     Conv2d,
     BatchNorm2d,
-    SiLU
+    SiLU,
+    Concat
 ])
 
 class StarWarsDetector:
