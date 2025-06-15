@@ -35,10 +35,11 @@ class StarWarsDetector:
         Args:
             model_path (str or Path): Path to the trained YOLOv8 model
         """
-        # Asegurarse de que SiLU y ModuleList estén en los safe globals
+        # Asegurarse de que todas las clases necesarias estén en los safe globals
         torch.serialization.add_safe_globals([
             torch.nn.modules.activation.SiLU,
-            torch.nn.modules.container.ModuleList
+            torch.nn.modules.container.ModuleList,
+            ultralytics.nn.modules.block.Bottleneck
         ])
         # Cargar el modelo con weights_only=False para compatibilidad
         self.model = YOLO(model_path, task='detect')
