@@ -12,10 +12,12 @@ from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.batchnorm import BatchNorm2d
 from torch.nn.modules.activation import SiLU
 from torch.nn.modules.pooling import MaxPool2d
+from torch.nn.modules.upsampling import Upsample
 from ml_model.detect import StarWarsDetector
 
 # Add safe globals for model loading
 add_safe_globals([
+    Upsample,
     MaxPool2d,
     Bottleneck,
     ModuleList,

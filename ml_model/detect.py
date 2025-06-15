@@ -18,9 +18,14 @@ from torch.nn.modules.container import ModuleList
 from torch.nn.modules.pooling import MaxPool2d
 from torch.serialization import add_safe_globals
 from torch.nn.modules.conv import Conv2d
+from torch.nn.modules.upsampling import Upsample
 
 # Add safe globals for model loading
 add_safe_globals([
+    Upsample,
+    MaxPool2d,
+    Bottleneck,
+    ModuleList,
     DetectionModel,
     Sequential,
     Conv,
@@ -29,10 +34,7 @@ add_safe_globals([
     Detect,
     Conv2d,
     BatchNorm2d,
-    SiLU,
-    ModuleList,
-    Bottleneck,
-    MaxPool2d
+    SiLU
 ])
 
 class StarWarsDetector:
