@@ -1,18 +1,22 @@
+import os
+import torch
 import cv2
 import numpy as np
 from pathlib import Path
 from ultralytics import YOLO
 from typing import List, Dict, Union, Tuple
-import torch
-from ultralytics.nn.tasks import DetectionModel
-from torch.serialization import add_safe_globals
-from torch.nn.modules.container import Sequential
+import ultralytics
+from ultralytics.nn.modules.block import Bottleneck
 from ultralytics.nn.modules.conv import Conv
 from ultralytics.nn.modules.block import C2f, SPPF
 from ultralytics.nn.modules.head import Detect
-from torch.nn.modules.conv import Conv2d
+from ultralytics.nn.tasks import DetectionModel
+from torch.nn import Sequential
 from torch.nn.modules.batchnorm import BatchNorm2d
 from torch.nn.modules.activation import SiLU
+from torch.nn.modules.container import ModuleList
+from torch.serialization import add_safe_globals
+from torch.nn.modules.conv import Conv2d
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -39,7 +43,7 @@ class StarWarsDetector:
         torch.serialization.add_safe_globals([
             torch.nn.modules.activation.SiLU,
             torch.nn.modules.container.ModuleList,
-            ultralytics.nn.modules.block.Bottleneck
+            Bottleneck
         ])
         # Cargar el modelo con weights_only=False para compatibilidad
         self.model = YOLO(model_path, task='detect')
