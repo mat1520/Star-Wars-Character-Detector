@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+venv310/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+runs/
+*.pt
+prediction_result.jpg
+app/static/uploads/
+*.jpg
+*.jpeg
+*.png
+!assets/images/*.png
+!assets/images/*.jpg
+
+# Dataset
+dataset_raw/
+dataset/
+
+# Logs
+*.log
+logs/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Model files
+*.weights
+*.onnx
+*.pth
+
+# Logs and databases
+*.sqlite
+*.db
+
+# Model checkpoints and results
+checkpoints/
+results/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/ 

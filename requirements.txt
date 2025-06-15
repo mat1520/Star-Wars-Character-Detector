@@ -1,0 +1,27 @@
+# Web Framework
+Flask==3.0.2
+Werkzeug
+
+# Machine Learning & Computer Vision
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.7.1
+torchvision==0.22.1
+opencv-python==4.9.0.80
+numpy==1.26.4
+ultralytics==8.1.28
+
+# Data Collection & Processing
+duckduckgo-search==4.1.1
+httpx==0.27.0
+tqdm==4.66.2
+
+# Image Processing
+Pillow==11.2.1
+
+# Development & Testing
+pytest==7.4.0
+black==23.7.0
+flake8==6.1.0
+
+# Utilities
+python-dotenv==1.0.0 
