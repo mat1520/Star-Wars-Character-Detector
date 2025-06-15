@@ -20,6 +20,23 @@ Este proyecto implementa un detector de personajes de Star Wars utilizando la te
   <p><i>Detección en tiempo real de personajes de Star Wars</i></p>
 </div>
 
+## Ejemplo de Resultados
+
+<div align="center">
+  <img src="assets/images/val_batch0_pred.jpg" alt="Predicción de validación" width="600"/>
+  <p><i>Predicción de validación</i></p>
+</div>
+
+<div align="center">
+  <img src="assets/images/confusion_matrix.png" alt="Matriz de confusión" width="600"/>
+  <p><i>Matriz de confusión</i></p>
+</div>
+
+<div align="center">
+  <img src="assets/images/results.png" alt="Curvas de aprendizaje" width="800"/>
+  <p><i>Curvas de aprendizaje del modelo</i></p>
+</div>
+
 ## 📊 Análisis de la Fuerza (Resultados)
 
 ### Métricas de Rendimiento
