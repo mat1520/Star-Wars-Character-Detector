@@ -20,7 +20,7 @@ UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # Initialize detector
-MODEL_PATH = "runs/detect/star_wars_detector/weights/best.pt"
+MODEL_PATH = str(Path(__file__).parent.parent / "runs/detect/star_wars_detector/weights/best.pt")
 detector = StarWarsDetector(MODEL_PATH)
 
 def allowed_file(filename):
@@ -74,4 +74,5 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000) 
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port) 

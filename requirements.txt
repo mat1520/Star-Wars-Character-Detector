@@ -1,6 +1,7 @@
 # Web Framework
 Flask==3.0.2
 Werkzeug
+gunicorn==21.2.0
 
 # Machine Learning & Computer Vision
 --find-links https://download.pytorch.org/whl/torch_stable.html
