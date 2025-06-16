@@ -15,6 +15,9 @@ from torch.nn.modules.pooling import MaxPool2d
 from torch.nn.modules.upsampling import Upsample
 from ultralytics.nn.modules.conv import Concat
 from ml_model.detect import StarWarsDetector
+import base64
+from io import BytesIO
+from PIL import Image
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -94,6 +97,48 @@ def detect():
             return jsonify({'error': str(e)}), 500
         finally:
             # Clean up the uploaded file
+            if os.path.exists(filepath):
+                os.remove(filepath)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image part'}), 400
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        try:
+            results = detector.detect(filepath)
+            detections = []
+            for box in results.boxes:
+                x1, y1, x2, y2 = box.xyxy[0].tolist()
+                confidence = float(box.conf[0])
+                class_id = int(box.cls[0])
+                class_name = results.names[class_id]
+                detections.append({
+                    'label': class_name,
+                    'confidence': confidence,
+                    'bbox': [x1, y1, x2, y2]
+                })
+            # Generar imagen con las detecciones
+            result_img = results.plot()
+            pil_img = Image.fromarray(result_img)
+            buffered = BytesIO()
+            pil_img.save(buffered, format="JPEG")
+            img_str = base64.b64encode(buffered.getvalue()).decode()
+            img_data_url = f"data:image/jpeg;base64,{img_str}"
+            return jsonify({
+                'success': True,
+                'image': img_data_url,
+                'detections': detections
+            })
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        finally:
             if os.path.exists(filepath):
                 os.remove(filepath)
 
