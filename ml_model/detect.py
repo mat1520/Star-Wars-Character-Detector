@@ -131,6 +131,26 @@ class StarWarsDetector:
         
         return detections, image if return_image else None
 
+    def detect(self, image_path):
+        detections, image = self.detect_characters(image_path, return_image=True)
+        class DummyResults:
+            pass
+        results = DummyResults()
+        results.boxes = []
+        results.names = self.class_names
+        for det in detections:
+            class Box:
+                pass
+            box = Box()
+            box.xyxy = [np.array(det['box'])]
+            box.conf = [det['confidence']]
+            box.cls = [self.class_names.index(det['label'])]
+            results.boxes.append(box)
+        def plot():
+            return image
+        results.plot = plot
+        return results
+
 def main():
     """Example usage of the StarWarsDetector class."""
     import argparse
