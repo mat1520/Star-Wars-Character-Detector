@@ -6,7 +6,7 @@ from torch.serialization import add_safe_globals
 from ultralytics.nn.tasks import DetectionModel
 from torch.nn.modules.container import Sequential, ModuleList
 from ultralytics.nn.modules.conv import Conv
-from ultralytics.nn.modules.block import C2f, SPPF, Bottleneck
+from ultralytics.nn.modules.block import C2f, SPPF, Bottleneck, DFL
 from ultralytics.nn.modules.head import Detect
 from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.batchnorm import BatchNorm2d
@@ -31,7 +31,8 @@ add_safe_globals([
     Conv2d,
     BatchNorm2d,
     SiLU,
-    Concat
+    Concat,
+    DFL
 ])
 
 app = Flask(__name__)

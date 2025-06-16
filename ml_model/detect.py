@@ -20,6 +20,7 @@ from torch.serialization import add_safe_globals
 from torch.nn.modules.conv import Conv2d
 from torch.nn.modules.upsampling import Upsample
 from ultralytics.nn.modules.conv import Concat
+from ultralytics.nn.modules.block import DFL
 
 # Add safe globals for model loading
 add_safe_globals([
@@ -36,7 +37,8 @@ add_safe_globals([
     Conv2d,
     BatchNorm2d,
     SiLU,
-    Concat
+    Concat,
+    DFL
 ])
 
 class StarWarsDetector:
