@@ -38,7 +38,7 @@ add_safe_globals([
     DFL
 ])
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Configuración de la aplicación
 app.config['UPLOAD_FOLDER'] = 'uploads'
